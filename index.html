@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>voa CMP - Check-in</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    /* Página 1 - Formulário */
+    .page-1 {
+      padding: 40px;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo h1 {
+      color: #2ecc71;
+      font-size: 2.5em;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #3498db;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      color: #7f8c8d;
+      font-size: 0.85em;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    select {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1em;
+      background-color: white;
+      cursor: pointer;
+      transition: border-color 0.3s;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233498db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 15px center;
+      background-size: 20px;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    select option {
+      padding: 10px;
+    }
+
+    .btn-confirmar {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s;
+      margin-top: 20px;
+    }
+
+    .btn-confirmar:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-confirmar:active {
+      transform: translateY(0);
+    }
+
+    /* Página 2 - Bilhete */
+    .page-2 {
+      display: none;
+      background: #f8f9fa;
+    }
+
+    .boarding-pass {
+      background: white;
+      margin: 30px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .pass-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .pass-header::before {
+      content: '✈';
+      position: absolute;
+      font-size: 100px;
+      opacity: 0.1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg);
+    }
+
+    .pass-logo {
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pass-logo span {
+      color: #2ecc71;
+    }
+
+    .pass-body {
+      padding: 30px;
+    }
+
+    .pass-field {
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 2px dashed #e0e0e0;
+    }
+
+    .pass-field:last-child {
+      border-bottom: none;
+    }
+
+    .pass-label {
+      color: #7f8c8d;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .pass-value {
+      color: #2c3e50;
+      font-size: 1.5em;
+      font-weight: bold;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 5px;
+      border-left: 4px solid #3498db;
+    }
+
+    .pass-value.horario {
+      border-left-color: #2ecc71;
+      color: #27ae60;
+    }
+
+    .barcode {
+      text-align: center;
+      padding: 20px;
+      background: #f8f9fa;
+      border-top: 3px dashed #e0e0e0;
+    }
+
+    .barcode-line {
+      height: 60px;
+      background: repeating-linear-gradient(90deg,
+          #2c3e50 0px,
+          #2c3e50 3px,
+          transparent 3px,
+          transparent 6px,
+          #2c3e50 6px,
+          #2c3e50 8px,
+          transparent 8px,
+          transparent 12px);
+      margin: 0 auto;
+      width: 80%;
+    }
+
+    .barcode-text {
+      margin-top: 10px;
+      color: #7f8c8d;
+      font-size: 0.8em;
+      letter-spacing: 3px;
+    }
+
+    .btn-voltar {
+      display: block;
+      width: calc(100% - 60px);
+      margin: 0 30px 30px 30px;
+      padding: 15px;
+      background: #95a5a6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-voltar:hover {
+      background: #7f8c8d;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Animação */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .page-2 {
+      animation: fadeIn 0.5s ease-out;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <!-- Página 1 - Formulário -->
+    <div class="page-1" id="page1">
+      <div class="logo">
+        <h1>voa <span>CMP</span></h1>
+      </div>
+
+      <form id="checkinForm">
+        <div class="form-group">
+          <label for="nome">NOME</label>
+          <input type="text" id="nome" name="nome" required placeholder="Digite seu nome completo">
+        </div>
+
+        <div class="form-group">
+          <label for="setor">SETOR</label>
+          <select id="setor" name="setor" required>
+            <option value="">Selecione o setor...</option>
+            <option value="CTI">CTI</option>
+            <option value="ASCOM">ASCOM</option>
+            <option value="RH">RH</option>
+            <option value="MECÂNICA">MECÂNICA</option>
+            <option value="TI">TI</option>
+            <option value="FINANCEIRO">FINANCEIRO</option>
+            <option value="COMERCIAL">COMERCIAL</option>
+            <option value="OPERACIONAL">OPERACIONAL</option>
+            <option value="LOGÍSTICA">LOGÍSTICA</option>
+            <option value="QUALIDADE">QUALIDADE</option>
+            <option value="SEGURANÇA">SEGURANÇA</option>
+            <option value="MANUTENÇÃO">MANUTENÇÃO</option>
+            <option value="ENGENHARIA">ENGENHARIA</option>
+            <option value="PRODUÇÃO">PRODUÇÃO</option>
+            <option value="COMPRAS">COMPRAS</option>
+            <option value="JURÍDICO">JURÍDICO</option>
+            <option value="MARKETING">MARKETING</option>
+            <option value="AUDITORIA">AUDITORIA</option>
+            <option value="CONTROLADORIA">CONTROLADORIA</option>
+            <option value="SUPRIMENTOS">SUPRIMENTOS</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-confirmar">CONFIRMAR</button>
+      </form>
+    </div>
+
+    <!-- Página 2 - Bilhete -->
+    <div class="page-2" id="page2">
+      <div class="boarding-pass">
+        <div class="pass-header">
+          <div class="pass-logo">voa <span>CMP</span></div>
+          <div style="font-size: 3em; margin-top: 10px;">✈</div>
+        </div>
+
+        <div class="pass-body">
+          <div class="pass-field">
+            <div class="pass-label">Nome</div>
+            <div class="pass-value" id="displayNome"></div>
+          </div>
+
+          <div class="pass-field">
+            <div class="pass-label">Setor</div>
+            <div class="pass-value" id="displaySetor"></div>
+          </div>
+
+          <div class="pass-field">
+            <div class="pass-label">Horário do Voo</div>
+            <div class="pass-value horario" id="displayHorario"></div>
+          </div>
+        </div>
+
+        <div class="barcode">
+          <div class="barcode-line"></div>
+          <div class="barcode-text">VOACMP2024</div>
+        </div>
+      </div>
+
+      <button class="btn-voltar" onclick="voltar()">Novo Check-in</button>
+    </div>
+  </div>
+
+  <script>
+    // Horários pré-determinados por setor
+    const horariosSetores = {
+      'CTI': '08:00',
+      'ASCOM': '09:00',
+      'RH': '10:00',
+      'MECÂNICA': '11:00',
+      'TI': '08:30',
+      'FINANCEIRO': '09:30',
+      'COMERCIAL': '10:30',
+      'OPERACIONAL': '07:00',
+      'LOGÍSTICA': '07:30',
+      'QUALIDADE': '08:00',
+      'SEGURANÇA': '06:00',
+      'MANUTENÇÃO': '07:00',
+      'ENGENHARIA': '08:00',
+      'PRODUÇÃO': '06:30',
+      'COMPRAS': '09:00',
+      'JURÍDICO': '09:00',
+      'MARKETING': '09:30',
+      'AUDITORIA': '08:30',
+      'CONTROLADORIA': '08:30',
+      'SUPRIMENTOS': '08:00'
+    };
+
+    // Formulário
+    const form = document.getElementById('checkinForm');
+    const page1 = document.getElementById('page1');
+    const page2 = document.getElementById('page2');
+
+    // Submit do formulário
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const nome = document.getElementById('nome').value;
+      const setor = document.getElementById('setor').value;
+      const horario = horariosSetores[setor] || '09:00';
+
+      // Preencher o bilhete
+      document.getElementById('displayNome').textContent = nome;
+      document.getElementById('displaySetor').textContent = setor;
+      document.getElementById('displayHorario').textContent = horario;
+
+      // Trocar de página
+      page1.classList.add('hidden');
+      page2.style.display = 'block';
+    });
+
+    // Função para voltar
+    function voltar() {
+      // Limpar formulário
+      form.reset();
+
+      // Trocar de página
+      page2.style.display = 'none';
+      page1.classList.remove('hidden');
+    }
+  </script>
+
+</body>
+
+</html>
