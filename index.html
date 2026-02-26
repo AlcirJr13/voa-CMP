@@ -170,21 +170,13 @@
     .pass-logo {
       font-size: 2em;
       font-weight: bold;
-      margin-bottom: 5px;
+      margin-bottom: 15px;
       position: relative;
       z-index: 1;
     }
 
     .pass-logo span {
       color: #3498db;
-    }
-
-    .pass-local {
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 0.9em;
-      margin-top: 5px;
-      position: relative;
-      z-index: 1;
     }
 
     .pass-body {
@@ -222,6 +214,11 @@
     .pass-value.horario {
       border-left-color: #2ecc71;
       color: #27ae60;
+    }
+
+    .pass-value.local {
+      border-left-color: #9b59b6;
+      color: #8e44ad;
     }
 
     .barcode {
@@ -423,7 +420,6 @@
       <div class="boarding-pass" id="boardingPass">
         <div class="pass-header">
           <div class="pass-logo">Voar <span>mais</span> alto↗</div>
-          <div class="pass-local">📍 AMM - Aeroporto Dr. Mário Medeiros (plenário)</div>
           <div style="font-size: 3em; margin-top: 15px;">✈</div>
         </div>
 
@@ -441,6 +437,12 @@
           <div class="pass-field">
             <div class="pass-label">Horário do Voo</div>
             <div class="pass-value horario" id="displayHorario"></div>
+          </div>
+
+          <!-- ✅ LOCAL ADICIONADO AQUI -->
+          <div class="pass-field">
+            <div class="pass-label">Local</div>
+            <div class="pass-value local" id="displayLocal">📍 AMM - Aeroporto Dr. Mário Medeiros (plenário)</div>
           </div>
         </div>
 
@@ -591,10 +593,11 @@
       const nome = document.getElementById('displayNome').textContent;
       const setor = document.getElementById('displaySetor').textContent;
       const horario = document.getElementById('displayHorario').textContent;
+      const local = '📍 AMM - Aeroporto Dr. Mário Medeiros (plenário)';
 
       const canvas = document.createElement('canvas');
       canvas.width = 440;
-      canvas.height = 650;
+      canvas.height = 700; // Aumentei a altura para caber o local
       const ctx = canvas.getContext('2d');
 
       // Fundo branco
@@ -602,13 +605,13 @@
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Cabeçalho com gradiente
-      const gradiente = ctx.createLinearGradient(0, 0, 0, 150);
+      const gradiente = ctx.createLinearGradient(0, 0, 0, 130);
       gradiente.addColorStop(0, '#667eea');
       gradiente.addColorStop(1, '#764ba2');
       ctx.fillStyle = gradiente;
-      ctx.fillRect(0, 0, canvas.width, 150);
+      ctx.fillRect(0, 0, canvas.width, 130);
 
-      // ✅ LOGO CORRIGIDO - "Voar mais alto↗"
+      // Logo - "Voar mais alto↗"
       const logoX = canvas.width / 2;
       const logoY = 50;
 
@@ -627,18 +630,13 @@
       ctx.fillStyle = '#2ecc71';
       ctx.fillText('alto↗', logoX + 60, logoY);
 
-      // Local
-      ctx.fillStyle = 'rgba(255,255,255,0.9)';
-      ctx.font = '14px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText('📍 AMM - Aeroporto Dr. Mário Medeiros (plenário)', canvas.width / 2, 75);
-
       // Ícone avião
       ctx.font = '48px Arial';
-      ctx.fillText('✈', canvas.width / 2, 120);
+      ctx.textAlign = 'center';
+      ctx.fillText('✈', canvas.width / 2, 95);
 
       // Corpo do bilhete
-      let y = 180;
+      let y = 160;
 
       // Campo Nome
       ctx.fillStyle = '#7f8c8d';
@@ -687,8 +685,26 @@
       ctx.font = 'bold 18px Arial';
       ctx.fillText(horario, 30, y + 25);
 
+      ctx.strokeStyle = '#e0e0e0';
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.moveTo(30, y + 35);
+      ctx.lineTo(canvas.width - 30, y + 35);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // ✅ Campo LOCAL (NOVO)
+      y += 70;
+      ctx.fillStyle = '#7f8c8d';
+      ctx.font = '12px Arial';
+      ctx.fillText('LOCAL', 30, y);
+
+      ctx.fillStyle = '#8e44ad';
+      ctx.font = 'bold 16px Arial';
+      ctx.fillText(local, 30, y + 25);
+
       // Código de barras
-      y += 100;
+      y += 80;
       ctx.fillStyle = '#f8f9fa';
       ctx.fillRect(0, y, canvas.width, 120);
 
