@@ -5,6 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voar mais alto↗ - Check-in</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <style>
     * {
       margin: 0;
@@ -31,14 +34,13 @@
       width: 100%;
     }
 
-    /* Página 1 - Formulário */
     .page-1 {
       padding: 40px;
     }
 
     .logo {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 10px;
     }
 
     .logo h1 {
@@ -49,6 +51,15 @@
 
     .logo span {
       color: #3498db;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #7f8c8d;
+      font-size: 1em;
+      margin-bottom: 30px;
+      line-height: 1.4;
+      padding: 0 10px;
     }
 
     .form-group {
@@ -87,7 +98,7 @@
       cursor: pointer;
       transition: border-color 0.3s;
       appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233498db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-image: url("image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233498db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat;
       background-position: right 15px center;
       background-size: 20px;
@@ -124,10 +135,10 @@
       transform: translateY(0);
     }
 
-    /* Página 2 - Bilhete */
     .page-2 {
       display: none;
       background: #f8f9fa;
+      padding-bottom: 20px;
     }
 
     .boarding-pass {
@@ -159,13 +170,21 @@
     .pass-logo {
       font-size: 2em;
       font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
       position: relative;
       z-index: 1;
     }
 
     .pass-logo span {
-      color: #2ecc71;
+      color: #3498db;
+    }
+
+    .pass-local {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.9em;
+      margin-top: 5px;
+      position: relative;
+      z-index: 1;
     }
 
     .pass-body {
@@ -192,7 +211,7 @@
 
     .pass-value {
       color: #2c3e50;
-      font-size: 1.5em;
+      font-size: 1.3em;
       font-weight: bold;
       padding: 10px;
       background: #f8f9fa;
@@ -210,21 +229,20 @@
       padding: 20px;
       background: #f8f9fa;
       border-top: 3px dashed #e0e0e0;
+      width: 100%;
     }
 
-    .barcode-line {
-      height: 60px;
-      background: repeating-linear-gradient(90deg,
-          #2c3e50 0px,
-          #2c3e50 3px,
-          transparent 3px,
-          transparent 6px,
-          #2c3e50 6px,
-          #2c3e50 8px,
-          transparent 8px,
-          transparent 12px);
+    .barcode-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .barcode svg {
+      display: block;
       margin: 0 auto;
-      width: 80%;
     }
 
     .barcode-text {
@@ -232,31 +250,61 @@
       color: #7f8c8d;
       font-size: 0.8em;
       letter-spacing: 3px;
+      text-align: center;
+      display: block;
+      width: 100%;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 30px 20px 30px;
+    }
+
+    .btn-salvar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-pdf {
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      color: white;
+    }
+
+    .btn-img {
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+      color: white;
     }
 
     .btn-voltar {
-      display: block;
-      width: calc(100% - 60px);
-      margin: 0 30px 30px 30px;
-      padding: 15px;
       background: #95a5a6;
       color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: background 0.3s;
     }
 
-    .btn-voltar:hover {
-      background: #7f8c8d;
+    .btn-salvar:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-salvar:active {
+      transform: translateY(0);
     }
 
     .hidden {
       display: none !important;
     }
 
-    /* Animação */
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -272,17 +320,32 @@
     .page-2 {
       animation: fadeIn 0.5s ease-out;
     }
+
+    @media (max-width: 480px) {
+      .logo h1 {
+        font-size: 2em;
+      }
+
+      .pass-value {
+        font-size: 1.1em;
+      }
+
+      .boarding-pass {
+        margin: 15px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
   <div class="container">
-    <!-- Página 1 - Formulário -->
     <div class="page-1" id="page1">
       <div class="logo">
         <h1>Voar <span>mais</span> alto↗</h1>
       </div>
+
+      <p class="subtitle">Preencha os dados e obtenha seu bilhete para decolar conosco.</p>
 
       <form id="checkinForm">
         <div class="form-group">
@@ -356,12 +419,12 @@
       </form>
     </div>
 
-    <!-- Página 2 - Bilhete -->
     <div class="page-2" id="page2">
-      <div class="boarding-pass">
+      <div class="boarding-pass" id="boardingPass">
         <div class="pass-header">
-          <div class="pass-logo">Voar <span>mais</span>alto↗</div>
-          <div style="font-size: 3em; margin-top: 10px;">✈</div>
+          <div class="pass-logo">Voar <span>mais</span> alto↗</div>
+          <div class="pass-local">📍 AMM - Aeroporto Dr. Mário Medeiros (plenário)</div>
+          <div style="font-size: 3em; margin-top: 15px;">✈</div>
         </div>
 
         <div class="pass-body">
@@ -382,17 +445,66 @@
         </div>
 
         <div class="barcode">
-          <div class="barcode-line"></div>
+          <div class="barcode-container">
+            <svg width="200" height="60" viewBox="0 0 200 60">
+              <rect x="10" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="14" y="5" width="4" height="50" fill="#2c3e50" />
+              <rect x="20" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="24" y="5" width="6" height="50" fill="#2c3e50" />
+              <rect x="32" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="36" y="5" width="4" height="50" fill="#2c3e50" />
+              <rect x="42" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="46" y="5" width="3" height="50" fill="#2c3e50" />
+              <rect x="51" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="55" y="5" width="5" height="50" fill="#2c3e50" />
+              <rect x="62" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="66" y="5" width="3" height="50" fill="#2c3e50" />
+              <rect x="71" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="75" y="5" width="4" height="50" fill="#2c3e50" />
+              <rect x="81" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="85" y="5" width="3" height="50" fill="#2c3e50" />
+              <rect x="90" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="94" y="5" width="5" height="50" fill="#2c3e50" />
+              <rect x="101" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="105" y="5" width="3" height="50" fill="#2c3e50" />
+              <rect x="110" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="114" y="5" width="4" height="50" fill="#2c3e50" />
+              <rect x="120" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="124" y="5" width="3" height="50" fill="#2c3e50" />
+              <rect x="129" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="133" y="5" width="5" height="50" fill="#2c3e50" />
+              <rect x="140" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="144" y="5" width="3" height="50" fill="#2c3e50" />
+              <rect x="149" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="153" y="5" width="4" height="50" fill="#2c3e50" />
+              <rect x="159" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="163" y="5" width="3" height="50" fill="#2c3e50" />
+              <rect x="168" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="172" y="5" width="5" height="50" fill="#2c3e50" />
+              <rect x="179" y="5" width="2" height="50" fill="#2c3e50" />
+              <rect x="183" y="5" width="3" height="50" fill="#2c3e50" />
+              <rect x="188" y="5" width="2" height="50" fill="#2c3e50" />
+            </svg>
+          </div>
           <div class="barcode-text">VOARMAISALTO↗</div>
         </div>
       </div>
 
-      <button class="btn-voltar" onclick="voltar()">Novo Check-in</button>
+      <div class="actions">
+        <button class="btn-salvar btn-pdf" onclick="salvarPDF(event)">
+          📄 Salvar como PDF
+        </button>
+        <button class="btn-salvar btn-img" onclick="salvarImagem(event)">
+          🖼️ Salvar como Imagem
+        </button>
+        <button class="btn-salvar btn-voltar" onclick="voltar()">
+          ↩️ Novo Check-in
+        </button>
+      </div>
     </div>
   </div>
 
   <script>
-    // Horários pré-determinados por setor
     const horariosSetores = {
       'Administração': '06/03/2026 - 09:15',
       'Almoxarifado': '06/03/2026 - 09:15',
@@ -448,40 +560,224 @@
       'Terceirizados': '06/03/2026 - 10:00',
       'Vigilantes': '06/03/2026 - 10:00',
       'ASG': '06/03/2026 - 10:00',
-      'Outro': '06/03/2026 - 10:00'
+      'Outro setor': '06/03/2026 - 10:00'
     };
 
-    // Formulário
     const form = document.getElementById('checkinForm');
     const page1 = document.getElementById('page1');
     const page2 = document.getElementById('page2');
 
-    // Submit do formulário
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
       const nome = document.getElementById('nome').value;
       const setor = document.getElementById('setor').value;
-      const horario = horariosSetores[setor] || '09:00';
+      const horario = horariosSetores[setor] || '06/03/2026 - 09:00';
 
-      // Preencher o bilhete
       document.getElementById('displayNome').textContent = nome;
       document.getElementById('displaySetor').textContent = setor;
       document.getElementById('displayHorario').textContent = horario;
 
-      // Trocar de página
       page1.classList.add('hidden');
       page2.style.display = 'block';
+
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 100);
     });
 
-    // Função para voltar
-    function voltar() {
-      // Limpar formulário
-      form.reset();
+    // Função para criar o canvas do bilhete
+    function criarCanvasBilhete() {
+      const nome = document.getElementById('displayNome').textContent;
+      const setor = document.getElementById('displaySetor').textContent;
+      const horario = document.getElementById('displayHorario').textContent;
 
-      // Trocar de página
+      const canvas = document.createElement('canvas');
+      canvas.width = 440;
+      canvas.height = 650;
+      const ctx = canvas.getContext('2d');
+
+      // Fundo branco
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Cabeçalho com gradiente
+      const gradiente = ctx.createLinearGradient(0, 0, 0, 150);
+      gradiente.addColorStop(0, '#667eea');
+      gradiente.addColorStop(1, '#764ba2');
+      ctx.fillStyle = gradiente;
+      ctx.fillRect(0, 0, canvas.width, 150);
+
+      // ✅ LOGO CORRIGIDO - "Voar mais alto↗"
+      const logoX = canvas.width / 2;
+      const logoY = 50;
+
+      // "Voar" em verde
+      ctx.fillStyle = '#2ecc71';
+      ctx.font = 'bold 24px Arial';
+      ctx.textAlign = 'right';
+      ctx.fillText('Voar ', logoX, logoY);
+
+      // "mais" em azul
+      ctx.fillStyle = '#3498db';
+      ctx.textAlign = 'left';
+      ctx.fillText('mais ', logoX, logoY);
+
+      // "alto↗" em verde
+      ctx.fillStyle = '#2ecc71';
+      ctx.fillText('alto↗', logoX + 60, logoY);
+
+      // Local
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.font = '14px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('📍 AMM - Aeroporto Dr. Mário Medeiros (plenário)', canvas.width / 2, 75);
+
+      // Ícone avião
+      ctx.font = '48px Arial';
+      ctx.fillText('✈', canvas.width / 2, 120);
+
+      // Corpo do bilhete
+      let y = 180;
+
+      // Campo Nome
+      ctx.fillStyle = '#7f8c8d';
+      ctx.font = '12px Arial';
+      ctx.textAlign = 'left';
+      ctx.fillText('NOME', 30, y);
+
+      ctx.fillStyle = '#2c3e50';
+      ctx.font = 'bold 18px Arial';
+      ctx.fillText(nome, 30, y + 25);
+
+      // Linha tracejada
+      ctx.strokeStyle = '#e0e0e0';
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.moveTo(30, y + 35);
+      ctx.lineTo(canvas.width - 30, y + 35);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Campo Setor
+      y += 70;
+      ctx.fillStyle = '#7f8c8d';
+      ctx.font = '12px Arial';
+      ctx.fillText('SETOR', 30, y);
+
+      ctx.fillStyle = '#2c3e50';
+      ctx.font = 'bold 18px Arial';
+      ctx.fillText(setor, 30, y + 25);
+
+      ctx.strokeStyle = '#e0e0e0';
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.moveTo(30, y + 35);
+      ctx.lineTo(canvas.width - 30, y + 35);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Campo Horário
+      y += 70;
+      ctx.fillStyle = '#7f8c8d';
+      ctx.font = '12px Arial';
+      ctx.fillText('HORÁRIO DO VOO', 30, y);
+
+      ctx.fillStyle = '#27ae60';
+      ctx.font = 'bold 18px Arial';
+      ctx.fillText(horario, 30, y + 25);
+
+      // Código de barras
+      y += 100;
+      ctx.fillStyle = '#f8f9fa';
+      ctx.fillRect(0, y, canvas.width, 120);
+
+      // Linha superior tracejada
+      ctx.strokeStyle = '#e0e0e0';
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(canvas.width, y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Barras
+      ctx.fillStyle = '#2c3e50';
+      const barras = [10, 14, 20, 24, 32, 36, 42, 46, 51, 55, 62, 66, 71, 75, 81, 85, 90, 94, 101, 105, 110, 114, 120, 124, 129, 133, 140, 144, 149, 153, 159, 163, 168, 172, 179, 183, 188];
+      const larguras = [2, 4, 2, 6, 2, 4, 2, 3, 2, 5, 2, 3, 2, 4, 2, 3, 2, 5, 2, 3, 2, 4, 2, 3, 2, 5, 2, 3, 2, 4, 2, 3, 2, 5, 2, 3, 2];
+
+      const offsetX = (canvas.width - 200) / 2;
+      for (let i = 0; i < barras.length; i++) {
+        ctx.fillRect(offsetX + barras[i], y + 10, larguras[i], 60);
+      }
+
+      // Texto do código de barras
+      ctx.fillStyle = '#7f8c8d';
+      ctx.font = '12px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('VOARMAISALTO↗', canvas.width / 2, y + 95);
+
+      return canvas;
+    }
+
+    async function salvarPDF(event) {
+      const btn = event.target;
+      const textoOriginal = btn.innerHTML;
+      btn.innerHTML = '⏳ Gerando PDF...';
+      btn.disabled = true;
+
+      try {
+        const canvas = criarCanvasBilhete();
+        const imgData = canvas.toDataURL('image/png');
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgWidth = 190;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+        pdf.save(`bilhete-voa-cmp.pdf`);
+
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao gerar PDF: ' + error.message);
+      } finally {
+        btn.innerHTML = textoOriginal;
+        btn.disabled = false;
+      }
+    }
+
+    async function salvarImagem(event) {
+      const btn = event.target;
+      const textoOriginal = btn.innerHTML;
+      btn.innerHTML = '⏳ Gerando Imagem...';
+      btn.disabled = true;
+
+      try {
+        const canvas = criarCanvasBilhete();
+        const imgData = canvas.toDataURL('image/png');
+
+        const link = document.createElement('a');
+        link.download = `bilhete-voa-cmp.png`;
+        link.href = imgData;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao gerar imagem: ' + error.message);
+      } finally {
+        btn.innerHTML = textoOriginal;
+        btn.disabled = false;
+      }
+    }
+
+    function voltar() {
+      form.reset();
       page2.style.display = 'none';
       page1.classList.remove('hidden');
+      window.scrollTo(0, 0);
     }
   </script>
 
