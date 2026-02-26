@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>voa CMP - Check-in</title>
+  <title>Voar mais alto↗ - Check-in</title>
   <style>
     * {
       margin: 0;
@@ -281,7 +281,7 @@
     <!-- Página 1 - Formulário -->
     <div class="page-1" id="page1">
       <div class="logo">
-        <h1>voa <span>CMP</span></h1>
+        <h1>Voar <span>mais</span> alto↗</h1>
       </div>
 
       <form id="checkinForm">
@@ -294,14 +294,61 @@
           <label for="setor">SETOR</label>
           <select id="setor" name="setor" required>
             <option value="">Selecione o setor...</option>
+            <option value="Administração">Administração</option>
+            <option value="Almoxarifado">Almoxarifado</option>
+            <option value="Arquivo">Arquivo</option>
+            <option value="ASG">ASG</option>
+            <option value="Assessoria de Comunicação">Assessoria de Comunicação</option>
+            <option value="Cerimonial">Cerimonial</option>
+            <option value="Compras">Compras</option>
+            <option value="Controladoria">Controladoria</option>
             <option value="CTI">CTI</option>
-            <option value="ASCOM">ASCOM</option>
-            <option value="RH">RH</option>
-            <option value="MANUTENÇÃO">MANUTENÇÃO</option>
-            <option value="FINANCEIRO">FINANCEIRO</option>
-            <option value="TERCEIRIZADO">TERCEIRIZADO</option>
-            <option value="COMPRAS">COMPRAS</option>
-            <option value="CONTROLADORIA">CONTROLADORIA</option>
+            <option value="Dir. Administrativo/Financeiro">Dir. Administrativo/Financeiro</option>
+            <option value="Dir. Contábil">Dir. Contábil</option>
+            <option value="Dir. Processo Legislativo">Dir. Processo Legislativo</option>
+            <option value="Dir. Recursos Humanos">Dir. Recursos Humanos</option>
+            <option value="Diretoria Geral">Diretoria Geral</option>
+            <option value="Escola do Legislativo">Escola do Legislativo</option>
+            <option value="Gabinete 02">Gabinete 02</option>
+            <option value="Gabinete 03">Gabinete 03</option>
+            <option value="Gabinete 04">Gabinete 04</option>
+            <option value="Gabinete 05">Gabinete 05</option>
+            <option value="Gabinete 06">Gabinete 06</option>
+            <option value="Gabinete 07">Gabinete 07</option>
+            <option value="Gabinete 08">Gabinete 08</option>
+            <option value="Gabinete 09">Gabinete 09</option>
+            <option value="Gabinete 10">Gabinete 10</option>
+            <option value="Gabinete 11">Gabinete 11</option>
+            <option value="Gabinete 12">Gabinete 12</option>
+            <option value="Gabinete 13">Gabinete 13</option>
+            <option value="Gabinete 14">Gabinete 14</option>
+            <option value="Gabinete 15">Gabinete 15</option>
+            <option value="Gabinete 16">Gabinete 16</option>
+            <option value="Gabinete 17">Gabinete 17</option>
+            <option value="Gabinete 18">Gabinete 18</option>
+            <option value="Gabinete 19">Gabinete 19</option>
+            <option value="Gabinete 20">Gabinete 20</option>
+            <option value="Gabinete 21">Gabinete 21</option>
+            <option value="Gabinete 22">Gabinete 22</option>
+            <option value="Guarita">Guarita</option>
+            <option value="Libras">Libras</option>
+            <option value="Manutenção">Manutenção</option>
+            <option value="Ouvidoria">Ouvidoria</option>
+            <option value="Patrimônio">Patrimônio</option>
+            <option value="Plenário">Plenário</option>
+            <option value="Presidência">Presidência</option>
+            <option value="Procon">Procon</option>
+            <option value="Procuradoria">Procuradoria</option>
+            <option value="Protocolo">Protocolo</option>
+            <option value="Recepção da Câmara">Recepção da Câmara</option>
+            <option value="Recepção dos Servidores">Recepção dos Servidores</option>
+            <option value="Redação de atas">Redação de atas</option>
+            <option value="Sala do Cidadão">Sala do Cidadão</option>
+            <option value="Setor de Licitações e Contratos">Setor de Licitações e Contratos</option>
+            <option value="Terceirizados">Terceirizados</option>
+            <option value="TV Câmara">TV Câmara</option>
+            <option value="Vigilantes">Vigilantes</option>
+            <option value="Outro setor">Outro setor</option>
           </select>
         </div>
 
@@ -313,7 +360,7 @@
     <div class="page-2" id="page2">
       <div class="boarding-pass">
         <div class="pass-header">
-          <div class="pass-logo">voa <span>CMP</span></div>
+          <div class="pass-logo">Voar <span>mais</span>alto↗</div>
           <div style="font-size: 3em; margin-top: 10px;">✈</div>
         </div>
 
@@ -336,7 +383,7 @@
 
         <div class="barcode">
           <div class="barcode-line"></div>
-          <div class="barcode-text">VOACMP2026</div>
+          <div class="barcode-text">VOARMAISALTO↗</div>
         </div>
       </div>
 
@@ -347,14 +394,61 @@
   <script>
     // Horários pré-determinados por setor
     const horariosSetores = {
-      'CTI': '08:00',
-      'ASCOM': '09:00',
-      'RH': '10:00',
-      'MANUTENÇÃO': '11:00',
-      'FINANCEIRO': '09:30',
-      'TERCEIRIZADO': '10:30',
-      'COMPRAS': '09:00',
-      'CONTROLADORIA': '08:30'
+      'Administração': '06/03/2026 - 09:15',
+      'Almoxarifado': '06/03/2026 - 09:15',
+      'Arquivo': '06/03/2026 - 09:15',
+      'Assessoria de Comunicação': '06/03/2026 - 09:15',
+      'CTI': '06/03/2026 - 09:15',
+      'Cerimonial': '06/03/2026 - 09:15',
+      'Setor de Licitações e Contratos': '06/03/2026 - 09:15',
+      'Compras': '06/03/2026 - 09:15',
+      'Controladoria': '06/03/2026 - 09:15',
+      'Dir. Administrativo/Financeiro': '06/03/2026 - 09:30',
+      'Dir. Recursos Humanos': '06/03/2026 - 09:30',
+      'Dir. Contábil': '06/03/2026 - 09:30',
+      'Dir. Processo Legislativo': '06/03/2026 - 09:30',
+      'Diretoria Geral': '06/03/2026 - 09:30',
+      'Escola do Legislativo': '06/03/2026 - 09:30',
+      'Libras': '06/03/2026 - 09:30',
+      'Manutenção': '06/03/2026 - 09:30',
+      'Gabinete 02': '06/03/2026 - 10:15',
+      'Gabinete 03': '06/03/2026 - 10:15',
+      'Gabinete 04': '06/03/2026 - 10:15',
+      'Gabinete 05': '06/03/2026 - 10:15',
+      'Gabinete 06': '06/03/2026 - 10:15',
+      'Gabinete 07': '06/03/2026 - 10:15',
+      'Gabinete 08': '06/03/2026 - 10:15',
+      'Gabinete 09': '06/03/2026 - 10:30',
+      'Gabinete 10': '06/03/2026 - 10:30',
+      'Gabinete 11': '06/03/2026 - 10:30',
+      'Gabinete 12': '06/03/2026 - 10:30',
+      'Gabinete 13': '06/03/2026 - 10:30',
+      'Gabinete 14': '06/03/2026 - 10:30',
+      'Gabinete 15': '06/03/2026 - 10:30',
+      'Gabinete 16': '06/03/2026 - 10:45',
+      'Gabinete 17': '06/03/2026 - 10:45',
+      'Gabinete 18': '06/03/2026 - 10:45',
+      'Gabinete 19': '06/03/2026 - 10:45',
+      'Gabinete 20': '06/03/2026 - 10:45',
+      'Gabinete 21': '06/03/2026 - 10:45',
+      'Gabinete 22': '06/03/2026 - 10:45',
+      'Guarita': '06/03/2026 - 09:30',
+      'Ouvidoria': '06/03/2026 - 09:45',
+      'Patrimônio': '06/03/2026 - 09:45',
+      'Plenário': '06/03/2026 - 09:45',
+      'Presidência': '06/03/2026 - 09:45',
+      'Procon': '06/03/2026 - 09:45',
+      'Procuradoria': '06/03/2026 - 09:45',
+      'Protocolo': '06/03/2026 - 09:45',
+      'Recepção da Câmara': '06/03/2026 - 09:45',
+      'Recepção dos Servidores': '06/03/2026 - 09:45',
+      'Redação de atas': '06/03/2026 - 09:45',
+      'Sala do Cidadão': '06/03/2026 - 10:00',
+      'TV Câmara': '06/03/2026 - 10:00',
+      'Terceirizados': '06/03/2026 - 10:00',
+      'Vigilantes': '06/03/2026 - 10:00',
+      'ASG': '06/03/2026 - 10:00',
+      'Outro': '06/03/2026 - 10:00'
     };
 
     // Formulário
