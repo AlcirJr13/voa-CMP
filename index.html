@@ -393,6 +393,7 @@
             <option value="Guarita">Guarita</option>
             <option value="Libras">Libras</option>
             <option value="Manutenção">Manutenção</option>
+            <option value="Motoristas">Motoristas</option>
             <option value="Ouvidoria">Ouvidoria</option>
             <option value="Patrimônio">Patrimônio</option>
             <option value="Plenário">Plenário</option>
@@ -400,14 +401,15 @@
             <option value="Procon">Procon</option>
             <option value="Procuradoria">Procuradoria</option>
             <option value="Protocolo">Protocolo</option>
-            <option value="Recepção da Câmara">Recepção da Câmara</option>
-            <option value="Recepção dos Servidores">Recepção dos Servidores</option>
+            <option value="Recepção - Turma 1">Recepção - Turma 1</option>
+            <option value="Recepção - Turma 2">Recepção - Turma 2</option>
             <option value="Redação de atas">Redação de atas</option>
             <option value="Sala do Cidadão">Sala do Cidadão</option>
             <option value="Setor de Licitações e Contratos">Setor de Licitações e Contratos</option>
             <option value="Terceirizados">Terceirizados</option>
             <option value="TV Câmara">TV Câmara</option>
-            <option value="Vigilantes">Vigilantes</option>
+            <option value="Vigilantes - Turma 1">Vigilantes - Turma 1</option>
+            <option value="Vigilantes - Turma 2">Vigilantes - Turma 2</option>
             <option value="Outro setor">Outro setor</option>
           </select>
         </div>
@@ -439,7 +441,6 @@
             <div class="pass-value horario" id="displayHorario"></div>
           </div>
 
-          <!-- ✅ LOCAL ADICIONADO AQUI -->
           <div class="pass-field">
             <div class="pass-label">Local</div>
             <div class="pass-value local" id="displayLocal">📍 AMM - Aeroporto Dr. Mário Medeiros (plenário)</div>
@@ -508,61 +509,59 @@
 
   <script>
     const horariosSetores = {
-      'Administração': '06/03/2026 - 09:15',
-      'Almoxarifado': '06/03/2026 - 09:15',
-      'Arquivo': '06/03/2026 - 09:15',
-      'Assessoria de Comunicação': '06/03/2026 - 09:15',
-      'CTI': '06/03/2026 - 09:15',
-      'Cerimonial': '06/03/2026 - 09:15',
-      'Setor de Licitações e Contratos': '06/03/2026 - 09:15',
-      'Compras': '06/03/2026 - 09:15',
-      'Controladoria': '06/03/2026 - 09:15',
+      'Administração': '06/03/2026 - 09:30',
+      'Almoxarifado': '06/03/2026 - 09:30',
+      'Arquivo': '06/03/2026 - 09:30',
+      'CTI': '06/03/2026 - 09:30',
+      'Cerimonial': '06/03/2026 - 09:30',
+      'Compras': '06/03/2026 - 09:30',
+      'Controladoria': '06/03/2026 - 09:30',
       'Dir. Administrativo/Financeiro': '06/03/2026 - 09:30',
       'Dir. Recursos Humanos': '06/03/2026 - 09:30',
       'Dir. Contábil': '06/03/2026 - 09:30',
       'Dir. Processo Legislativo': '06/03/2026 - 09:30',
       'Diretoria Geral': '06/03/2026 - 09:30',
       'Escola do Legislativo': '06/03/2026 - 09:30',
-      'Libras': '06/03/2026 - 09:30',
-      'Manutenção': '06/03/2026 - 09:30',
-      'Gabinete 02': '06/03/2026 - 10:15',
-      'Gabinete 03': '06/03/2026 - 10:15',
-      'Gabinete 04': '06/03/2026 - 10:15',
-      'Gabinete 05': '06/03/2026 - 10:15',
-      'Gabinete 06': '06/03/2026 - 10:15',
-      'Gabinete 07': '06/03/2026 - 10:15',
-      'Gabinete 08': '06/03/2026 - 10:15',
-      'Gabinete 09': '06/03/2026 - 10:30',
-      'Gabinete 10': '06/03/2026 - 10:30',
-      'Gabinete 11': '06/03/2026 - 10:30',
-      'Gabinete 12': '06/03/2026 - 10:30',
-      'Gabinete 13': '06/03/2026 - 10:30',
-      'Gabinete 14': '06/03/2026 - 10:30',
-      'Gabinete 15': '06/03/2026 - 10:30',
-      'Gabinete 16': '06/03/2026 - 10:45',
-      'Gabinete 17': '06/03/2026 - 10:45',
-      'Gabinete 18': '06/03/2026 - 10:45',
-      'Gabinete 19': '06/03/2026 - 10:45',
-      'Gabinete 20': '06/03/2026 - 10:45',
-      'Gabinete 21': '06/03/2026 - 10:45',
-      'Gabinete 22': '06/03/2026 - 10:45',
-      'Guarita': '06/03/2026 - 09:30',
-      'Ouvidoria': '06/03/2026 - 09:45',
-      'Patrimônio': '06/03/2026 - 09:45',
+      'Libras': '06/03/2026 - 09:45',
+      'Manutenção': '06/03/2026 - 09:45',
+      'Portaria/ Guarita': '06/03/2026 - 09:45',
       'Plenário': '06/03/2026 - 09:45',
       'Presidência': '06/03/2026 - 09:45',
       'Procon': '06/03/2026 - 09:45',
       'Procuradoria': '06/03/2026 - 09:45',
       'Protocolo': '06/03/2026 - 09:45',
-      'Recepção da Câmara': '06/03/2026 - 09:45',
-      'Recepção dos Servidores': '06/03/2026 - 09:45',
-      'Redação de atas': '06/03/2026 - 09:45',
-      'Sala do Cidadão': '06/03/2026 - 10:00',
-      'TV Câmara': '06/03/2026 - 10:00',
-      'Terceirizados': '06/03/2026 - 10:00',
-      'Vigilantes': '06/03/2026 - 10:00',
+      'Recepção - Turma 1': '06/03/2026 - 10:00',
+      'Redação de atas': '06/03/2026 - 10:00',
       'ASG': '06/03/2026 - 10:00',
-      'Outro setor': '06/03/2026 - 10:00'
+      'Vigilantes - Turma 1': '06/03/2026 - 10:00',
+      'Recepção - Turma 2': '06/03/2026 - 10:15',
+      'Vigilantes - Turma 2': '06/03/2026 - 10:15',
+      'Motoristas': '06/03/2026 - 10:15',
+      'Copa': '06/03/2026 - 10:30',
+      'Garçons': '06/03/2026 - 10:30',
+      'Gabinete 02': '06/03/2026 - 10:30',
+      'Gabinete 03': '06/03/2026 - 10:30',
+      'Gabinete 04': '06/03/2026 - 10:30',
+      'Gabinete 05': '06/03/2026 - 10:30',
+      'Gabinete 06': '06/03/2026 - 10:30',
+      'Gabinete 07': '06/03/2026 - 10:45',
+      'Gabinete 08': '06/03/2026 - 10:45',
+      'Gabinete 09': '06/03/2026 - 10:45',
+      'Gabinete 10': '06/03/2026 - 10:45',
+      'Gabinete 11': '06/03/2026 - 10:45',
+      'Gabinete 12': '06/03/2026 - 11:00',
+      'Gabinete 13': '06/03/2026 - 11:00',
+      'Gabinete 14': '06/03/2026 - 11:00',
+      'Gabinete 15': '06/03/2026 - 11:00',
+      'Gabinete 16': '06/03/2026 - 11:00',
+      'Gabinete 17': '06/03/2026 - 11:15',
+      'Gabinete 18': '06/03/2026 - 11:15',
+      'Gabinete 19': '06/03/2026 - 11:15',
+      'Gabinete 20': '06/03/2026 - 11:15',
+      'Gabinete 21': '06/03/2026 - 11:15',
+      'Gabinete 22': '06/03/2026 - 11:30',
+      'Assessoria de Comunicação': '06/03/2026 - 11:30',
+      'Outro setor': '06/03/2026 - 11:30'
     };
 
     const form = document.getElementById('checkinForm');
